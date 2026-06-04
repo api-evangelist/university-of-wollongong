@@ -1,0 +1,72 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "uow": "https://www.uow.edu.au/#vocab/",
+    "schema": "https://schema.org/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "oai": "http://www.openarchives.org/OAI/2.0/",
+    "CollegeOrUniversity": "schema:CollegeOrUniversity",
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "logo": "schema:logo",
+    "sameAs": "schema:sameAs",
+    "foundingDate": "schema:foundingDate",
+    "address": "schema:address",
+    "addressLocality": "schema:addressLocality",
+    "addressRegion": "schema:addressRegion",
+    "addressCountry": "schema:addressCountry",
+    "department": "schema:department",
+    "api": {
+      "@id": "uow:api",
+      "@type": "@id"
+    },
+    "humanURL": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "baseURL": {
+      "@id": "uow:baseURL",
+      "@type": "@id"
+    },
+    "ResearchRepository": "uow:ResearchRepository",
+    "LibraryDiscoveryService": "uow:LibraryDiscoveryService",
+    "record": "oai:record",
+    "identifier": "dc:identifier",
+    "title": "dc:title",
+    "creator": "dc:creator",
+    "subject": "dc:subject",
+    "publisher": "dc:publisher",
+    "date": "dc:date",
+    "type": "dc:type"
+  },
+  "@type": "CollegeOrUniversity",
+  "name": "University of Wollongong",
+  "url": "https://www.uow.edu.au/",
+  "description": "Public research university based in Wollongong, New South Wales, Australia.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Wollongong",
+    "addressRegion": "NSW",
+    "addressCountry": "AU"
+  },
+  "sameAs": [
+    "https://github.com/uowits",
+    "https://au.linkedin.com/school/university-of-wollongong/"
+  ],
+  "api": [
+    {
+      "@type": "ResearchRepository",
+      "name": "Research Online OAI-PMH",
+      "humanURL": "https://ro.uow.edu.au/",
+      "baseURL": "https://ro.uow.edu.au/do/oai/",
+      "description": "OAI-PMH metadata harvesting interface for UOW Research Online (bepress Digital Commons)."
+    },
+    {
+      "@type": "LibraryDiscoveryService",
+      "name": "UOW Library Discovery (Ex Libris Primo/Alma)",
+      "humanURL": "https://uow.primo.exlibrisgroup.com/",
+      "description": "Ex Libris Alma/Primo discovery layer exposing REST APIs documented via the Ex Libris Developer Network."
+    }
+  ]
+}

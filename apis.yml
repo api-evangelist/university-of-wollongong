@@ -70,6 +70,12 @@ common:
     url: rate-limits/university-of-wollongong-rate-limits.yml
   - type: FinOps
     url: finops/university-of-wollongong-finops.yml
+  - type: Blog
+    url: https://www.uow.edu.au/media/
+  - type: BlogRSS
+    url: https://www.uow.edu.au/media/rss/index.php
+  - type: JSONLD
+    url: json-ld/university-of-wollongong-context.jsonld
   - type: Review
     url: review.yml
 maintainers:

@@ -1,0 +1,14 @@
+{
+  "repo": "university-of-wollongong",
+  "feeds": [
+    {
+      "source": "https://www.uow.edu.au/media/",
+      "feed_url": "https://www.uow.edu.au/media/rss/index.php",
+      "title": "Media and news articles - University of Wollongong",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-06-03T00:00:00Z"
+}
