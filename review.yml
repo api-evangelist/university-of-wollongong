@@ -1,0 +1,43 @@
+---
+name: University of Wollongong
+description: University of Wollongong public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/university-of-wollongong/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      No public, self-service developer portal exists for UOW. Confirmed
+      machine-readable surfaces are third-party platforms: a Research Online
+      OAI-PMH endpoint (bepress Digital Commons, documented by Sherpa repo 276)
+      and the UOW Library on Ex Libris Alma/Primo (REST APIs via the Ex Libris
+      Developer Network, key-gated). The official website, the uowits GitHub
+      org, and the LinkedIn school page were verified live. The OAI-PMH endpoint
+      returned a bot challenge (HTTP 202 / empty body) so a valid Identify
+      response could not be confirmed. No endpoints were fabricated.
+    endpoints:
+      - url: https://www.uow.edu.au/
+        status: 200
+        note: Official institution website, verified live.
+      - url: https://ro.uow.edu.au/
+        status: 202
+        note: Research Online repository (Digital Commons); served via bot challenge.
+      - url: https://ro.uow.edu.au/do/oai/?verb=Identify
+        status: 202
+        note: Documented OAI-PMH base URL; bot challenge, valid OAI response not confirmed.
+      - url: https://v2.sherpa.ac.uk/id/repository/276
+        status: 403
+        note: Sherpa registry entry documenting the OAI-PMH endpoint; blocks bots.
+      - url: https://uow.primo.exlibrisgroup.com/
+        status: 200
+        note: UOW Library Primo discovery instance, verified live.
+      - url: https://developers.exlibrisgroup.com/primo/apis/
+        status: 200
+        note: Ex Libris Primo REST API documentation (third-party platform).
+      - url: https://github.com/uowits
+        status: 200
+        note: UOW IT Services public GitHub org (5 public repos), verified live.
+      - url: https://au.linkedin.com/school/university-of-wollongong/
+        status: 999
+        note: Official LinkedIn school page; 999 is LinkedIn anti-bot, page exists.

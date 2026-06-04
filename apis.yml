@@ -1,0 +1,77 @@
+---
+aid: university-of-wollongong
+name: University of Wollongong
+description: >-
+  The University of Wollongong (UOW) is a public research university based in
+  Wollongong, New South Wales, Australia, ranked #167 in the QS World University
+  Rankings 2025. UOW does not operate a public, self-service developer portal.
+  Its confirmed machine-readable footprint is built on third-party platforms:
+  the Research Online institutional repository runs on bepress Digital Commons
+  and exposes an OAI-PMH metadata interface, while the UOW Library runs on the
+  Ex Libris Alma/Primo platform whose REST APIs are documented through the Ex
+  Libris Developer Network. UOW IT Services also maintains a small public GitHub
+  organization. Most institutional systems (student administration, identity)
+  are gated behind authentication and not publicly documented.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/university-of-wollongong/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Australia
+  - Research Repository
+  - Library
+  - Open Access
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: university-of-wollongong:research-online-oai
+    name: Research Online OAI-PMH
+    description: >-
+      OAI-PMH metadata harvesting interface for University of Wollongong
+      Research Online, the institution's open access repository running on
+      bepress Digital Commons. Exposes journal articles, conference papers,
+      theses, and reports for harvesting. Endpoint is documented by Sherpa
+      (repository 276); the live endpoint returns a bot challenge to automated
+      clients, so a valid Identify response could not be confirmed in this pass.
+    humanURL: https://ro.uow.edu.au/
+    baseURL: https://ro.uow.edu.au/do/oai/
+    tags: [ Research Repository, OAI-PMH, Open Access, Digital Commons, Metadata ]
+    properties:
+      - type: Documentation
+        url: https://v2.sherpa.ac.uk/id/repository/276
+  - aid: university-of-wollongong:library-primo-alma
+    name: UOW Library Discovery (Ex Libris Primo/Alma)
+    description: >-
+      The UOW Library runs on the Ex Libris Alma library services platform with
+      the Primo discovery layer (adopted 2020). Primo and Alma expose REST APIs
+      for search, bibliographic, and resource-management workflows. The APIs are
+      documented through the Ex Libris Developer Network and generally require an
+      institution API key; UOW does not publish its own developer documentation.
+    humanURL: https://uow.primo.exlibrisgroup.com/
+    tags: [ Library, Discovery, Ex Libris, Primo, Alma, REST ]
+    properties:
+      - type: Documentation
+        url: https://developers.exlibrisgroup.com/primo/apis/
+common:
+  - type: Website
+    url: https://www.uow.edu.au/
+  - type: GitHub
+    url: https://github.com/uowits
+  - type: LinkedIn
+    url: https://au.linkedin.com/school/university-of-wollongong/
+  - type: Plans
+    url: plans/university-of-wollongong-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/university-of-wollongong-rate-limits.yml
+  - type: FinOps
+    url: finops/university-of-wollongong-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
