@@ -1,17 +1,23 @@
 ---
 aid: university-of-wollongong
 name: University of Wollongong
+x-type: university
+x-category: Public Research University
 description: >-
-  The University of Wollongong (UOW) is a public research university based in
-  Wollongong, New South Wales, Australia, ranked #167 in the QS World University
-  Rankings 2025. UOW does not operate a public, self-service developer portal.
-  Its confirmed machine-readable footprint is built on third-party platforms:
-  the Research Online institutional repository runs on bepress Digital Commons
-  and exposes an OAI-PMH metadata interface, while the UOW Library runs on the
-  Ex Libris Alma/Primo platform whose REST APIs are documented through the Ex
-  Libris Developer Network. UOW IT Services also maintains a small public GitHub
-  organization. Most institutional systems (student administration, identity)
-  are gated behind authentication and not publicly documented.
+  The University of Wollongong (UOW) is a public research university in Wollongong, New South
+  Wales, Australia, established in 1951 (ROR 00jtmb277, GRID grid.1007.6, ISNI 0000 0004 0486
+  528X). UOW operates no public, self-service developer portal and publishes no API
+  specification: www.uow.edu.au carries no /api, /apis or /developer page across its 5,092-URL
+  sitemap, and there is no llms.txt or .well-known/security.txt. What it does operate that is
+  machine-readable is an identity surface, not a data surface — a Shibboleth SAML 2.0 Identity
+  Provider at idp.uow.edu.au whose EntityDescriptor is served publicly and is registered in the
+  Australian Access Federation aggregate — plus registry memberships in DataCite, Crossref and
+  ROR that carry its own DOI prefixes. Its research and library platforms are vendor tenancies:
+  Research Online (ro.uow.edu.au) is a Figshare instance, UOW Scholars (scholars.uow.edu.au) is
+  a Symplectic Elements/Discovery instance, and library discovery runs on Ex Libris Primo/Alma.
+  Two institution-hosted API gateways exist under uow.edu.au — an AWS API Gateway behind the UOW
+  Handbook at courses.uow.edu.au/api and a MuleSoft CloudHub endpoint at api.uow.edu.au — but
+  neither is publicly documented and neither answers an anonymous request.
 type: Index
 deliveryModel:
   model: saas
@@ -45,64 +51,254 @@ tags:
   - Higher Education
   - University
   - Australia
+  - New South Wales
+  - Public Research University
+  - Identity Federation
   - Research Repository
   - Library
+  - Course Catalog
   - Open Access
+  - Persistent Identifiers
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-09-01'
 specificationVersion: '0.23'
 apis:
-  - aid: university-of-wollongong:research-online-oai
-    name: Research Online OAI-PMH
+  - aid: university-of-wollongong:idp-saml-metadata
+    name: UOW Shibboleth Identity Provider (SAML 2.0 metadata)
+    x-operator: federation
     description: >-
-      OAI-PMH metadata harvesting interface for University of Wollongong
-      Research Online, the institution's open access repository running on
-      bepress Digital Commons. Exposes journal articles, conference papers,
-      theses, and reports for harvesting. Endpoint is documented by Sherpa
-      (repository 276); the live endpoint returns a bot challenge to automated
-      clients, so a valid Identify response could not be confirmed in this pass.
-    humanURL: https://ro.uow.edu.au/
-    baseURL: https://ro.uow.edu.au/do/oai/
-    tags: [ Research Repository, OAI-PMH, Open Access, Digital Commons, Metadata ]
+      The University of Wollongong's own SAML 2.0 Identity Provider. Its EntityDescriptor is
+      served publicly and unauthenticated at https://idp.uow.edu.au/idp/shibboleth (HTTP 200,
+      application/xml, 4,358 bytes) with entityID https://idp.uow.edu.au/idp/shibboleth, a
+      shibmd:Scope of uow.edu.au, IdP-Signing and IdP-Encryption X.509 key descriptors, HTTP-POST
+      and HTTP-Redirect SingleSignOnService bindings, and the requested attributes
+      auEduPersonSharedToken, email and displayName. The same entity is present in the
+      Australian Access Federation aggregate metadata at md.aaf.edu.au/aaf-metadata.xml (HTTP
+      200, 3,188,501 bytes), which is how UOW federates with AAF service providers. The IdP is
+      run on AAF's Rapid IdP managed Shibboleth service — the 404 page at idp.uow.edu.au titles
+      itself "Rapid IdP Manager" — but the entity, the scope, the signing keys and the
+      released attributes are UOW's. This is the strongest institution-operated machine-readable
+      surface in the profile.
+    humanURL: https://www.uow.edu.au/its/
+    baseURL: https://idp.uow.edu.au/idp/shibboleth
+    tags: [ Identity Federation, Shibboleth, SAML, SSO, AAF, eduGAIN ]
     properties:
       - type: Documentation
-        url: https://v2.sherpa.ac.uk/id/repository/276
-  - aid: university-of-wollongong:library-primo-alma
-    name: UOW Library Discovery (Ex Libris Primo/Alma)
+        url: https://aaf.edu.au/subscribers/
+      - type: IdentityFederation
+        url: https://md.aaf.edu.au/aaf-metadata.xml
+  - aid: university-of-wollongong:research-online-figshare
+    name: Research Online (Figshare tenancy)
+    x-operator: tenant
     description: >-
-      The UOW Library runs on the Ex Libris Alma library services platform with
-      the Primo discovery layer (adopted 2020). Primo and Alma expose REST APIs
-      for search, bibliographic, and resource-management workflows. The APIs are
-      documented through the Ex Libris Developer Network and generally require an
-      institution API key; UOW does not publish its own developer documentation.
+      Research Online is UOW's open access institutional repository, and since its 2025 platform
+      migration it is a Figshare tenancy, not the bepress Digital Commons instance the June 2026
+      profile recorded. Evidence is unambiguous: ro.uow.edu.au CNAMEs to proxy-eu-01.figshare.com;
+      requests to it are answered by an AWS WAF challenge (HTTP 202, x-amzn-waf-action: challenge)
+      whose body sets awsWafCookieDomainList = ['figshare.com']; and the Figshare public API
+      returns UOW items with url_public_html on ro.uow.edu.au, group_id 57528 and DOIs under the
+      prefix 10.71747, which DataCite lists against repository client uow.figshare. The data,
+      the DOI prefix and the branded portal are UOW's; the contract is Figshare's and is not
+      saved here. The OAI-PMH endpoint the previous profile claimed at /do/oai/ was a bepress
+      path and no OAI response could be confirmed on the current platform — every path on the
+      host, including /oai and /do/oai/, returns the same 202 WAF challenge.
+    humanURL: https://ro.uow.edu.au/
+    tags: [ Research Repository, Open Access, Figshare, DOI, Institutional Repository ]
+    properties:
+      - type: Documentation
+        url: https://uow.libguides.com/elements/research-online
+      - type: Vendor
+        url: https://knowledge.figshare.com/
+  - aid: university-of-wollongong:uow-scholars-symplectic
+    name: UOW Scholars (Symplectic Elements / Discovery tenancy)
+    x-operator: tenant
+    description: >-
+      UOW Scholars is the university's public researcher-profile portal, running on Symplectic
+      Elements with the Symplectic Discovery front end. scholars.uow.edu.au CNAMEs through
+      uow.discovery.symplectic.org to lb.apse.discovery.symplectic.org, confirming the tenancy.
+      The portal is a Node/Express application that exposes an /api mount — /api/config answers
+      HTTP 403 {"error": "Forbidden", "message": "Access denied"} and unknown routes answer the
+      Express 404 "Cannot GET /..." — so there is a real HTTP API behind it, but it is not
+      public, not documented and not UOW's contract. Elements is UOW's research-output reporting
+      and collection system and pushes claimed outputs to ORCID.
+    humanURL: https://scholars.uow.edu.au/
+    tags: [ Research Profiles, Symplectic Elements, ORCID, CRIS, Research Information ]
+    properties:
+      - type: Documentation
+        url: https://uow.libguides.com/elements
+      - type: Vendor
+        url: https://www.symplectic.co.uk/
+  - aid: university-of-wollongong:library-primo-alma
+    name: UOW Library Discovery (Ex Libris Primo / Alma tenancy)
+    x-operator: tenant
+    description: >-
+      The UOW Library runs on the Ex Libris Alma library services platform with the Primo
+      discovery layer, on the institution-specific tenant host uow.primo.exlibrisgroup.com
+      (HTTP 200). Primo and Alma expose REST APIs for search, bibliographic and
+      resource-management workflows, documented on the Ex Libris Developer Network and gated
+      behind an institution API key. UOW publishes no developer documentation of its own for
+      these APIs, and the specification belongs to Ex Libris, so no contract is saved here.
     humanURL: https://uow.primo.exlibrisgroup.com/
     tags: [ Library, Discovery, Ex Libris, Primo, Alma, REST ]
     properties:
       - type: Documentation
         url: https://developers.exlibrisgroup.com/primo/apis/
+      - type: LibraryCatalog
+        url: https://www.uow.edu.au/library/
+  - aid: university-of-wollongong:course-handbook-api
+    name: UOW Handbook course catalog API (undocumented)
+    x-operator: institution
+    description: >-
+      The UOW Handbook at courses.uow.edu.au is a Next.js application served from CloudFront on
+      UOW's own registrable domain and backed by an AWS API Gateway at courses.uow.edu.au/api/.
+      Every anonymous request to that gateway — /api/, /api/search, /api/course, /api/subjects,
+      /api/publisher/configuration, /api/openapi.json — returns HTTP 403 {"message": "Missing
+      Authentication Token"}, the API Gateway signature for an unmatched or unauthorized route,
+      so no route, schema or specification could be recovered. The site's own robots.txt and
+      sitemap.xml are open (HTTP 200) and the handbook content is fully crawlable as HTML. The
+      handbook platform itself is CourseLoop's curriculum product; the gateway, the domain and
+      the deployment are UOW's. No contract is saved because none is published.
+    humanURL: https://courses.uow.edu.au/
+    baseURL: https://courses.uow.edu.au/api/
+    tags: [ Course Catalog, Handbook, Registrar, AWS API Gateway, Undocumented ]
+    properties:
+      - type: Documentation
+        url: https://www.uow.edu.au/student/handbook/
+      - type: Sitemap
+        url: https://courses.uow.edu.au/sitemap.xml
+  - aid: university-of-wollongong:datacite-membership
+    name: DataCite membership (repository uow.figshare)
+    x-operator: registry
+    description: >-
+      The University of Wollongong is a DataCite consortium organization, symbol UOW, provider id
+      uow, created 2024-08-26, holding the DOI prefix 10.71747 and operating the DataCite
+      repository client uow.figshare. This is a fact about UOW's participation in the DOI
+      registry — DataCite's own API contract is not saved here and the membership record is not
+      removed for being on a shared host.
+    humanURL: https://www.uow.edu.au/library/researchers/
+    baseURL: https://api.datacite.org/providers/uow
+    tags: [ DataCite, DOI, Persistent Identifiers, Research Data, Registry ]
+    properties:
+      - type: Documentation
+        url: https://support.datacite.org/docs/api
+  - aid: university-of-wollongong:crossref-membership
+    name: Crossref membership (University of Wollongong Library, member 5587)
+    x-operator: registry
+    description: >-
+      The University of Wollongong Library is Crossref member 5587, holding the DOI prefix
+      10.14453 with 1,611 registered DOIs (277 current, 1,334 backfile) as of 2026-09-01. The
+      prefix predates the Figshare migration and covers the repository's earlier deposits.
+      Crossref's own API contract is not saved here.
+    humanURL: https://www.crossref.org/
+    baseURL: https://api.crossref.org/members/5587
+    tags: [ Crossref, DOI, Persistent Identifiers, Scholarly Publishing, Registry ]
+    properties:
+      - type: Documentation
+        url: https://api.crossref.org/swagger-ui/index.html
+  - aid: university-of-wollongong:ror-registration
+    name: ROR registration (00jtmb277)
+    x-operator: registry
+    description: >-
+      The University of Wollongong is registered in the Research Organization Registry as
+      https://ror.org/00jtmb277 (status active, established 1951), cross-walked to Crossref
+      Funder ID 501100001777, GRID grid.1007.6, ISNI 0000 0004 0486 528X and Wikidata Q1350021.
+      ROR's own API contract is not saved here.
+    humanURL: https://ror.org/00jtmb277
+    baseURL: https://api.ror.org/v2/organizations/00jtmb277
+    tags: [ ROR, Organization Identifiers, Persistent Identifiers, Registry ]
+    properties:
+      - type: Documentation
+        url: https://ror.readme.io/
 common:
-  - type: DomainSecurity
-    url: security/university-of-wollongong-domain-security.yml
   - type: Website
     url: https://www.uow.edu.au/
-  - type: GitHub
+  - type: IdentityFederation
+    url: https://idp.uow.edu.au/idp/shibboleth
+  - type: ResearchRepository
+    url: https://ro.uow.edu.au/
+  - type: CourseCatalog
+    url: https://courses.uow.edu.au/
+  - type: LibraryCatalog
+    url: https://uow.primo.exlibrisgroup.com/
+  - type: GitHubOrganization
     url: https://github.com/uowits
   - type: LinkedIn
     url: https://au.linkedin.com/school/university-of-wollongong/
+  - type: Documentation
+    url: https://www.uow.edu.au/about/policy/
+  - type: TermsOfService
+    url: https://www.uow.edu.au/about/governance/copyright-and-disclaimer/
+  - type: PrivacyPolicy
+    url: https://www.uow.edu.au/privacy/
+  - type: Support
+    url: https://www.uow.edu.au/about/contacts/
+  - type: Status
+    url: https://www.uow.edu.au/its/scheduled-maintenance/
+  - type: AIPolicy
+    url: https://www.uow.edu.au/about/governance/academic-integrity/genai-in-assessment/
+  - type: AITooling
+    url: https://ltc.uow.edu.au/hub/collection/ai-in-education
+  - type: Blog
+    url: https://www.uow.edu.au/media/
+  - type: BlogRSS
+    url: https://www.uow.edu.au/media/rss/
+  - type: Authentication
+    url: authentication/university-of-wollongong-authentication.yml
+  - type: Conformance
+    url: conformance/university-of-wollongong-conformance.yml
+  - type: DomainSecurity
+    url: security/university-of-wollongong-domain-security.yml
   - type: Plans
     url: plans/university-of-wollongong-plans-pricing.yml
   - type: RateLimits
     url: rate-limits/university-of-wollongong-rate-limits.yml
   - type: FinOps
     url: finops/university-of-wollongong-finops.yml
-  - type: Blog
-    url: https://www.uow.edu.au/media/
-  - type: BlogRSS
-    url: https://www.uow.edu.au/media/rss/index.php
   - type: JSONLD
     url: json-ld/university-of-wollongong-context.jsonld
   - type: Review
     url: review.yml
+x-coverage:
+  state: gated
+  reason: auth_required
+  detail: >-
+    UOW publishes no API specification and no developer portal, and every callable interface it
+    operates itself is credential-gated. The AWS API Gateway behind the UOW Handbook answers
+    every anonymous path with HTTP 403 "Missing Authentication Token"; the Symplectic Discovery
+    /api mount on scholars.uow.edu.au answers HTTP 403 "Access denied"; and api.uow.edu.au
+    resolves in DNS to a MuleSoft CloudHub endpoint (v4fkkn.aus-s1.cloudhub.io) whose TCP 443
+    and 80 both time out from the public internet, so an institution API gateway exists but is
+    not publicly reachable. What is public and machine-readable is the SAML 2.0 metadata for
+    UOW's own Shibboleth IdP (HTTP 200, application/xml) plus its DataCite, Crossref and ROR
+    registry records. Research Online and UOW Scholars are Figshare and Symplectic tenancies and
+    their contracts belong to those vendors; ro.uow.edu.au additionally sits behind an AWS WAF
+    challenge (HTTP 202) that blocks anonymous probing of any path, including OAI-PMH.
+  evidence:
+  - url: https://idp.uow.edu.au/idp/shibboleth
+    status: 200
+  - url: https://md.aaf.edu.au/aaf-metadata.xml
+    status: 200
+  - url: https://api.datacite.org/providers/uow
+    status: 200
+  - url: https://api.crossref.org/members/5587
+    status: 200
+  - url: https://api.ror.org/v2/organizations/00jtmb277
+    status: 200
+  - url: https://courses.uow.edu.au/api/search
+    status: 403
+  - url: https://scholars.uow.edu.au/api/config
+    status: 403
+  - url: https://api.uow.edu.au/
+    status: 0
+  - url: https://ro.uow.edu.au/do/oai/?verb=Identify
+    status: 202
+  - url: https://ro.uow.edu.au/oai?verb=Identify
+    status: 202
+  - url: https://www.uow.edu.au/llms.txt
+    status: 404
+  - url: https://www.uow.edu.au/.well-known/security.txt
+    status: 404
+  checked: '2026-09-01'
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
