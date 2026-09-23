@@ -1,3 +1,6 @@
+generated: '2026-09-01'
+method: derived
+source: derived by API Evangelist from apis.yml and live probes of UOW hosts; UOW publishes no document of this kind
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
@@ -12,15 +15,20 @@ tags:
 - University
 - Plans
 description: >-
-  University of Wollongong is a non-commercial higher-education institution; its APIs are not sold
-  as a commercial product. Public APIs (library, repository, course, and open-metadata
-  interfaces) are offered free of charge, typically for non-commercial use. Most
-  administrative and identity APIs are not openly self-service and require institutional
-  affiliation, credentials, or federation membership rather than a paid plan.
+  University of Wollongong is a non-commercial higher-education institution and sells no API as a
+  product. It publishes no API specification, no developer portal and no plan or price list of any
+  kind. The only publicly readable machine-readable surface it operates itself is the SAML 2.0
+  metadata for its Shibboleth Identity Provider, which is free and unauthenticated. Everything else
+  it operates is credential-gated (courses.uow.edu.au/api returns HTTP 403; api.uow.edu.au is not
+  publicly reachable), and its research and library platforms are Figshare, Symplectic and Ex Libris
+  tenancies whose commercial terms are the vendors', not UOW's. Access is governed by institutional
+  affiliation and federation membership, not by a paid plan.
 notes: >-
-  No published per-seat or per-call commercial pricing. "Free / Open" reflects open
-  public endpoints; "Affiliation / Credentialed" reflects access gated by institutional
-  identity rather than payment.
+  No published per-seat or per-call commercial pricing was found. "Free / Open" reflects the one
+  open unauthenticated endpoint confirmed (the IdP SAML metadata) plus the DataCite, Crossref and
+  ROR registry records; "Affiliation / Credentialed" reflects access gated by institutional identity
+  rather than payment. The plan entries below are our derivation from an absence of published
+  pricing, not a plan UOW publishes.
 sources:
 - https://raw.githubusercontent.com/api-evangelist/university-of-wollongong/refs/heads/main/apis.yml
 plans:

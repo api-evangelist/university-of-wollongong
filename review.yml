@@ -3,8 +3,82 @@ name: University of Wollongong
 description: University of Wollongong public developer/API footprint review for APIs.json cataloging.
 url: https://raw.githubusercontent.com/api-evangelist/university-of-wollongong/refs/heads/main/review.yml
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-09-01'
 reviews:
+  - date: '2026-09-01'
+    rating: 2
+    summary: >-
+      Re-profiled under the university pipeline, operator axis first. Two corrections of record.
+      (1) Research Online is NOT bepress Digital Commons: ro.uow.edu.au CNAMEs to
+      proxy-eu-01.figshare.com and answers with an AWS WAF challenge whose body sets
+      awsWafCookieDomainList = ['figshare.com']; the Figshare public API returns UOW items with
+      url_public_html on ro.uow.edu.au, group_id 57528 and DOI prefix 10.71747, which DataCite
+      lists against repository client uow.figshare. The surface is re-labelled from an
+      institution-hosted OAI-PMH endpoint to a Figshare TENANCY, and the OAI-PMH claim is
+      withdrawn as unconfirmable. (2) Three surface classes the June pass missed were found: UOW's
+      own Shibboleth SAML 2.0 Identity Provider, publicly readable and in the AAF aggregate;
+      UOW Scholars on Symplectic Elements/Discovery; and an AWS API Gateway on UOW's own domain
+      behind the UOW Handbook. DataCite, Crossref and ROR registry memberships were confirmed
+      against each registry's own API. No contract was saved for any vendor platform, and no
+      relationship was deleted to achieve that.
+    endpoints:
+      - url: https://idp.uow.edu.au/idp/shibboleth
+        status: 200
+        note: >-
+          UOW's own SAML 2.0 EntityDescriptor, application/xml, 4,358 bytes. entityID
+          https://idp.uow.edu.au/idp/shibboleth, shibmd:Scope uow.edu.au. Institution-operated.
+      - url: https://md.aaf.edu.au/aaf-metadata.xml
+        status: 200
+        note: Australian Access Federation aggregate; contains the UOW IdP entity. 3,188,501 bytes.
+      - url: https://ro.uow.edu.au/
+        status: 202
+        note: AWS WAF challenge scoped to figshare.com. Figshare tenancy, not bepress.
+      - url: https://ro.uow.edu.au/do/oai/?verb=Identify
+        status: 202
+        note: Bepress-era OAI path; WAF challenge, no OAI response. Prior claim withdrawn.
+      - url: https://ro.uow.edu.au/oai?verb=Identify
+        status: 202
+        note: Figshare-era OAI path; same WAF challenge. OAI-PMH unconfirmed either way.
+      - url: https://scholars.uow.edu.au/
+        status: 200
+        note: UOW Scholars; CNAMEs to uow.discovery.symplectic.org. Symplectic tenancy.
+      - url: https://scholars.uow.edu.au/api/config
+        status: 403
+        note: '{"error": "Forbidden", "message": "Access denied"} — real API, not public.'
+      - url: https://courses.uow.edu.au/api/search
+        status: 403
+        note: '{"message": "Missing Authentication Token"} — AWS API Gateway on UOW''s own domain.'
+      - url: https://courses.uow.edu.au/sitemap.xml
+        status: 200
+        note: UOW Handbook sitemap; handbook content is crawlable as HTML.
+      - url: https://api.uow.edu.au/
+        status: 0
+        note: >-
+          Resolves to MuleSoft CloudHub v4fkkn.aus-s1.cloudhub.io; TCP 443 and 80 both time out.
+          An institution API gateway exists in DNS but is not publicly reachable.
+      - url: https://api.datacite.org/providers/uow
+        status: 200
+        note: DataCite consortium organization UOW, prefix 10.71747, client uow.figshare.
+      - url: https://api.crossref.org/members/5587
+        status: 200
+        note: University of Wollongong Library, prefix 10.14453, 1,611 DOIs.
+      - url: https://api.ror.org/v2/organizations/00jtmb277
+        status: 200
+        note: ROR record; Funder ID 501100001777, GRID grid.1007.6, established 1951.
+      - url: https://uow.primo.exlibrisgroup.com/
+        status: 200
+        note: Ex Libris Primo tenant host, redirects to /mng/login.
+      - url: https://www.uow.edu.au/llms.txt
+        status: 404
+        note: No llms.txt.
+      - url: https://www.uow.edu.au/.well-known/security.txt
+        status: 404
+        note: No security.txt.
+      - url: https://v2.sherpa.ac.uk/id/repository/276
+        status: 403
+        note: >-
+          Jisc bot block, and the entry describes the retired bepress platform. Removed as a
+          pointer; it is a stale claim regardless of reachability.
   - date: '2026-06-03'
     rating: 2
     summary: >-

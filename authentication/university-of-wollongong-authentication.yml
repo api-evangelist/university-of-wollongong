@@ -1,0 +1,78 @@
+generated: '2026-09-01'
+method: probed
+source: >-
+  https://idp.uow.edu.au/idp/shibboleth (HTTP 200, application/xml) and
+  https://md.aaf.edu.au/aaf-metadata.xml (HTTP 200), plus anonymous probes of
+  courses.uow.edu.au/api, scholars.uow.edu.au/api and api.uow.edu.au
+docs: https://www.uow.edu.au/its/
+summary:
+  types:
+  - saml2
+  api_key_in: []
+  oauth2_flows: []
+  note: >-
+    The University of Wollongong publishes no API key, OAuth or token-issuance programme of any
+    kind. Its one publicly documented, machine-readable authentication surface is federated SSO:
+    a Shibboleth SAML 2.0 Identity Provider whose metadata is served openly and is registered in
+    the Australian Access Federation. Everything else UOW itself operates that answers HTTP is
+    credential-gated with no anonymous discovery path — the UOW Handbook's AWS API Gateway
+    returns 403 "Missing Authentication Token" on every path, the Symplectic Discovery /api mount
+    returns 403 "Access denied", and api.uow.edu.au (a MuleSoft CloudHub endpoint,
+    v4fkkn.aus-s1.cloudhub.io) does not accept a TCP connection from the public internet at all.
+    No OpenID Connect discovery document is served: both
+    https://idp.uow.edu.au/.well-known/openid-configuration and
+    https://www.uow.edu.au/.well-known/openid-configuration return HTTP 404.
+schemes:
+- name: UOW Shibboleth SAML 2.0 SSO
+  type: saml2
+  in: browser
+  parameter: SAMLRequest
+  format: SAML 2.0 AuthnRequest / Response
+  purpose: >-
+    Federated single sign-on for UOW staff and students into AAF and eduGAIN service providers,
+    and into UOW's own credential-gated systems.
+  description: >-
+    entityID https://idp.uow.edu.au/idp/shibboleth, shibmd:Scope uow.edu.au. Bindings:
+    urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST at
+    https://idp.uow.edu.au/idp/profile/SAML2/POST/SSO and
+    urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect at
+    https://idp.uow.edu.au/idp/profile/SAML2/Redirect/SSO. NameIDFormat
+    urn:oasis:names:tc:SAML:2.0:nameid-format:transient. Separate IdP-Signing and IdP-Encryption
+    X.509 certificates, both issued 2016-07-27 and valid to 2036-07-27 with subjectAltName
+    idp.uow.edu.au. Requested attributes: auEduPersonSharedToken
+    (urn:oid:1.3.6.1.4.1.27856.1.2.5), email (urn:oid:0.9.2342.19200300.100.1.3) and displayName
+    (urn:oid:2.16.840.1.113730.3.1.241). Organization block declares "The University of
+    Wollongong" at http://www.uow.edu.au/. Runs on AAF's Rapid IdP managed Shibboleth service.
+  issued_at: https://idp.uow.edu.au/idp/shibboleth
+  issuance: >-
+    Not self-service. Trust is established through federation membership, not through a developer
+    signup: a service provider joins the Australian Access Federation, its metadata enters the
+    AAF aggregate at https://md.aaf.edu.au/aaf-metadata.xml, and UOW's IdP releases attributes to
+    it under AAF policy. There is no public route for an unaffiliated developer to obtain UOW
+    credentials.
+  scoped: false
+  sources:
+  - https://idp.uow.edu.au/idp/shibboleth
+  - https://md.aaf.edu.au/aaf-metadata.xml
+gated_surfaces:
+- url: https://courses.uow.edu.au/api/
+  status: 403
+  challenge: '{"message": "Missing Authentication Token"}'
+  note: AWS API Gateway behind the UOW Handbook; no documented credential, no anonymous route.
+- url: https://scholars.uow.edu.au/api/config
+  status: 403
+  challenge: '{"error": "Forbidden", "message": "Access denied"}'
+  note: Symplectic Discovery API mount; vendor-operated, UOW tenancy.
+- url: https://api.uow.edu.au/
+  status: 0
+  challenge: TCP connect timeout on 443 and 80
+  note: >-
+    Resolves to MuleSoft CloudHub (v4fkkn.aus-s1.cloudhub.io, 13.210.59.124 / 13.54.241.245 /
+    13.236.171.124). An institution API gateway exists in DNS but is not publicly reachable.
+- url: https://ro.uow.edu.au/
+  status: 202
+  challenge: 'AWS WAF challenge, x-amzn-waf-action: challenge'
+  note: Figshare tenancy; the WAF blocks every anonymous path including OAI-PMH.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

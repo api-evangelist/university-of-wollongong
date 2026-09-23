@@ -1,3 +1,6 @@
+generated: '2026-09-01'
+method: derived
+source: derived by API Evangelist from apis.yml and live probes of UOW hosts; UOW publishes no document of this kind
 specification: FinOps Framework
 specificationVersion: '1.0'
 schema: https://www.finops.org/framework/
@@ -13,11 +16,15 @@ tags:
 - FinOps
 - FOCUS
 description: >-
-  FinOps profile for University of Wollongong. As a non-commercial higher-education institution, its
-  APIs carry no usage-based billing; there is no invoiced cost to allocate or optimize.
-  FinOps relevance is limited to the institution's own internal cloud/infrastructure
-  cost management, which is not publicly disclosed.
-notes: No public usage-based API billing; University of Wollongong's APIs are free/open or affiliation-gated.
+  FinOps profile for University of Wollongong. UOW publishes no API and sells no API access, so
+  there is no usage-based billing, no invoiced API cost to allocate, and nothing to optimize on
+  the consumer side. FinOps relevance is limited to the institution's own internal cloud and
+  vendor-platform spend (AWS, MuleSoft CloudHub, Figshare, Symplectic, Ex Libris), none of which
+  is publicly disclosed.
+notes: >-
+  No public usage-based API billing. UOW publishes no API; the surfaces attributed to it are a free
+  unauthenticated SAML metadata document, three registry memberships, and vendor tenancies whose
+  commercial terms belong to the vendors.
 sources:
 - https://raw.githubusercontent.com/api-evangelist/university-of-wollongong/refs/heads/main/apis.yml
 - https://www.finops.org/framework/

@@ -1,0 +1,104 @@
+generated: '2026-09-01'
+method: probed
+source: >-
+  live HTTP/DNS probes of idp.uow.edu.au, md.aaf.edu.au, courses.uow.edu.au, scholars.uow.edu.au,
+  ro.uow.edu.au and www.uow.edu.au, plus the DataCite, Crossref and ROR public APIs
+docs: https://www.uow.edu.au/
+note: >-
+  Conformance against the Kin Score `education` regime standards[] — scim, lti, oneroster, ed-fi,
+  caliper, qti, oai-pmh, shibboleth, saml, orcid, datacite, crossref. UOW publishes no OpenAPI,
+  AsyncAPI or other API contract of its own, so the only contract-level evidence available here is
+  the SAML 2.0 metadata document its Identity Provider serves; every other `true` below is a
+  registry record fetched from that registry's own API. Nothing is asserted from a prose claim
+  alone, and no conformance was invented to fill a slot.
+standards:
+- id: saml
+  conforms: true
+  evidence: >-
+    https://idp.uow.edu.au/idp/shibboleth returns HTTP 200, application/xml, 4,358 bytes — a SAML
+    2.0 EntityDescriptor (xmlns urn:oasis:names:tc:SAML:2.0:metadata) with entityID
+    https://idp.uow.edu.au/idp/shibboleth, an IDPSSODescriptor carrying
+    protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol", signing and encryption
+    KeyDescriptors, NameIDFormat transient, and SingleSignOnService bindings for HTTP-POST
+    (/idp/profile/SAML2/POST/SSO) and HTTP-Redirect (/idp/profile/SAML2/Redirect/SSO). The
+    document itself is the contract.
+- id: shibboleth
+  conforms: true
+  evidence: >-
+    The same document carries the Shibboleth metadata extension namespace
+    urn:mace:shibboleth:metadata:1.0 with <shibmd:Scope regexp="false">uow.edu.au</shibmd:Scope>,
+    and the IdP is reachable at Shibboleth IdP paths (/idp/profile/..., /idp/status returns 403).
+    The entity appears in the Australian Access Federation aggregate at
+    https://md.aaf.edu.au/aaf-metadata.xml (HTTP 200, 3,188,501 bytes), which also carries the
+    AAF attribute auEduPersonSharedToken (urn:oid:1.3.6.1.4.1.27856.1.2.5) as a requested
+    attribute on the UOW entity.
+- id: datacite
+  conforms: true
+  evidence: >-
+    https://api.datacite.org/providers/uow returns HTTP 200 with name "University of Wollongong",
+    symbol UOW, memberType consortium_organization, created 2024-08-26. Prefix 10.71747 is
+    assigned to it (api.datacite.org/prefixes?provider-id=uow) and the repository client
+    uow.figshare is registered under it (api.datacite.org/clients?provider-id=uow). Live UOW
+    items carry DOIs under that prefix, e.g. 10.71747/uow-r3gk326m.33400099.v1.
+- id: crossref
+  conforms: true
+  evidence: >-
+    https://api.crossref.org/members/5587 returns HTTP 200 with primary-name "University of
+    Wollongong Library", prefix 10.14453, and 1,611 registered DOIs (277 current, 1,334 backfile)
+    as of 2026-09-01.
+- id: orcid
+  conforms: partial
+  evidence: >-
+    Documentation-level only, not contract-level. UOW's Symplectic Elements deployment claims
+    ORCID integration in both directions — "Uses identifiers to automatically claim your research
+    outputs from Scopus, Web of Science and ORCiD" and "Authorise Elements to automatically send
+    your research outputs to ORCiD" (https://uow.libguides.com/elements, HTTP 200), and the
+    library runs a dedicated ORCID guide (https://uow.libguides.com/ORCID, HTTP 200). No UOW-run
+    endpoint exposing ORCID iDs machine-readably could be reached: the Symplectic Discovery /api
+    mount on scholars.uow.edu.au answers HTTP 403. Marked partial because the integration is
+    Symplectic's, evidenced in prose, not in a contract UOW publishes.
+- id: oai-pmh
+  conforms: unknown
+  evidence: >-
+    Not confirmed, and the previous profile's claim has been withdrawn. Research Online migrated
+    from bepress Digital Commons to Figshare, so the recorded base URL
+    https://ro.uow.edu.au/do/oai/ is a bepress path. Every path on that host — /, /do/oai/?verb=Identify
+    and /oai?verb=Identify — returns HTTP 202 with x-amzn-waf-action: challenge and an AWS WAF
+    body scoped to awsWafCookieDomainList = ['figshare.com'], so no verb=Identify response could
+    be obtained by any anonymous client. Sherpa's registry entry for repository 276
+    (https://v2.sherpa.ac.uk/id/repository/276) returns HTTP 403 to automated clients and in any
+    case describes the retired platform.
+- id: scim
+  conforms: false
+  evidence: >-
+    No SCIM service provider configuration found. https://www.uow.edu.au/scim/v2/ServiceProviderConfig,
+    https://www.uow.edu.au/ServiceProviderConfig and
+    https://idp.uow.edu.au/scim/v2/ServiceProviderConfig all return HTTP 404, and scim.uow.edu.au
+    does not resolve in DNS.
+- id: lti
+  conforms: false
+  evidence: >-
+    No public LTI tool or platform registration is published. lti.uow.edu.au and
+    moodle.uow.edu.au do not resolve in DNS, https://www.uow.edu.au/.well-known/openid-configuration
+    returns HTTP 404, and no LTI Dynamic Registration or Deep Linking endpoint could be reached
+    on any UOW host.
+- id: oneroster
+  conforms: false
+  evidence: >-
+    No OneRoster endpoint or claim found on any reachable UOW host, and none is referenced
+    anywhere in the 5,092-URL www.uow.edu.au sitemap; OneRoster is a K-12 rostering standard.
+- id: ed-fi
+  conforms: false
+  evidence: >-
+    No Ed-Fi ODS/API endpoint or reference found on any reachable UOW host or in the
+    www.uow.edu.au sitemap; Ed-Fi is a US K-12 data standard.
+- id: caliper
+  conforms: false
+  evidence: >-
+    No Caliper Analytics endpoint, sensor or claim found on any public UOW surface or in the
+    www.uow.edu.au sitemap.
+- id: qti
+  conforms: false
+  evidence: >-
+    No QTI item bank or export endpoint found on any public UOW surface or in the
+    www.uow.edu.au sitemap.

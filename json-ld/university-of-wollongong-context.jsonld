@@ -38,7 +38,11 @@
     "subject": "dc:subject",
     "publisher": "dc:publisher",
     "date": "dc:date",
-    "type": "dc:type"
+    "type": "dc:type",
+    "IdentityFederation": "uow:IdentityFederation",
+    "CourseCatalog": "uow:CourseCatalog",
+    "RegistryMembership": "uow:RegistryMembership",
+    "operator": "uow:operator"
   },
   "@type": "CollegeOrUniversity",
   "name": "University of Wollongong",
@@ -51,22 +55,70 @@
     "addressCountry": "AU"
   },
   "sameAs": [
+    "https://ror.org/00jtmb277",
+    "https://www.wikidata.org/wiki/Q1350021",
     "https://github.com/uowits",
     "https://au.linkedin.com/school/university-of-wollongong/"
   ],
   "api": [
     {
+      "@type": "IdentityFederation",
+      "name": "UOW Shibboleth Identity Provider (SAML 2.0 metadata)",
+      "operator": "federation",
+      "humanURL": "https://www.uow.edu.au/its/",
+      "baseURL": "https://idp.uow.edu.au/idp/shibboleth",
+      "description": "UOW's own SAML 2.0 IdP metadata, served publicly and registered in the Australian Access Federation aggregate at https://md.aaf.edu.au/aaf-metadata.xml."
+    },
+    {
       "@type": "ResearchRepository",
-      "name": "Research Online OAI-PMH",
+      "name": "Research Online (Figshare tenancy)",
+      "operator": "tenant",
       "humanURL": "https://ro.uow.edu.au/",
-      "baseURL": "https://ro.uow.edu.au/do/oai/",
-      "description": "OAI-PMH metadata harvesting interface for UOW Research Online (bepress Digital Commons)."
+      "description": "UOW's open access institutional repository, running as a Figshare tenancy (DOI prefix 10.71747, Figshare group 57528). The contract is Figshare's; the data and DOI prefix are UOW's."
+    },
+    {
+      "@type": "ResearchRepository",
+      "name": "UOW Scholars (Symplectic Elements / Discovery tenancy)",
+      "operator": "tenant",
+      "humanURL": "https://scholars.uow.edu.au/",
+      "description": "Public researcher-profile portal on Symplectic Elements/Discovery (scholars.uow.edu.au CNAMEs to uow.discovery.symplectic.org)."
     },
     {
       "@type": "LibraryDiscoveryService",
-      "name": "UOW Library Discovery (Ex Libris Primo/Alma)",
+      "name": "UOW Library Discovery (Ex Libris Primo / Alma tenancy)",
+      "operator": "tenant",
       "humanURL": "https://uow.primo.exlibrisgroup.com/",
-      "description": "Ex Libris Alma/Primo discovery layer exposing REST APIs documented via the Ex Libris Developer Network."
+      "description": "Library discovery and resource management on the Ex Libris Alma/Primo platform; APIs are Ex Libris', key-gated."
+    },
+    {
+      "@type": "CourseCatalog",
+      "name": "UOW Handbook course catalog API (undocumented)",
+      "operator": "institution",
+      "humanURL": "https://courses.uow.edu.au/",
+      "baseURL": "https://courses.uow.edu.au/api/",
+      "description": "AWS API Gateway on UOW's own domain behind the UOW Handbook. Every anonymous path returns HTTP 403 'Missing Authentication Token'; no specification is published."
+    },
+    {
+      "@type": "RegistryMembership",
+      "name": "DataCite membership (repository uow.figshare)",
+      "operator": "registry",
+      "baseURL": "https://api.datacite.org/providers/uow",
+      "description": "DataCite consortium organization UOW, DOI prefix 10.71747, repository client uow.figshare."
+    },
+    {
+      "@type": "RegistryMembership",
+      "name": "Crossref membership (member 5587)",
+      "operator": "registry",
+      "baseURL": "https://api.crossref.org/members/5587",
+      "description": "University of Wollongong Library, Crossref member 5587, DOI prefix 10.14453."
+    },
+    {
+      "@type": "RegistryMembership",
+      "name": "ROR registration (00jtmb277)",
+      "operator": "registry",
+      "baseURL": "https://api.ror.org/v2/organizations/00jtmb277",
+      "description": "Research Organization Registry record; Funder ID 501100001777, GRID grid.1007.6, ISNI 0000 0004 0486 528X."
     }
-  ]
+  ],
+  "foundingDate": "1951"
 }

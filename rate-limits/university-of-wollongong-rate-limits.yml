@@ -1,3 +1,6 @@
+generated: '2026-09-01'
+method: derived
+source: derived by API Evangelist from apis.yml and live probes of UOW hosts; UOW publishes no document of this kind
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
@@ -12,11 +15,16 @@ tags:
 - University
 - Rate Limiting
 description: >-
-  University of Wollongong does not publish a unified public rate-limit table across its APIs. Open
-  metadata and harvesting endpoints (OAI-PMH, IIIF, library) may throttle large-scale
-  or automated harvesting; clients should harvest politely, honor Retry-After, and
-  contact the relevant service for bulk access.
-notes: Confirm per-service limits with each API's documentation; harvest responsibly.
+  University of Wollongong publishes no rate-limit documentation, because it publishes no API. No
+  OAI-PMH or IIIF endpoint operated by UOW could be confirmed in the 2026-09-01 pass — the earlier
+  claim of an OAI-PMH base at ro.uow.edu.au/do/oai/ was a bepress path that did not survive the
+  repository's migration to Figshare, and the host now answers every anonymous request with an AWS
+  WAF challenge (HTTP 202). The practical limits a client meets on UOW hosts are access controls,
+  not throttles: HTTP 403 on courses.uow.edu.au/api and scholars.uow.edu.au/api, HTTP 202 WAF
+  challenge on ro.uow.edu.au, and a TCP timeout on api.uow.edu.au.
+notes: >-
+  No published limit exists to record. Where a vendor tenancy (Figshare, Symplectic, Ex Libris)
+  imposes limits, those are the vendor's and are documented on the vendor's own developer site.
 sources:
 - https://raw.githubusercontent.com/api-evangelist/university-of-wollongong/refs/heads/main/apis.yml
 responseCodes:
@@ -25,8 +33,10 @@ limits:
 - name: Default
   scope: client
   metric: requests-per-minute
-  limit: see service documentation
-  notes: No published global limit; large harvests may be rate-limited.
+  limit: not published
+  notes: >-
+    No global limit is published by UOW and no UOW-operated endpoint returned a 429 or any
+    RateLimit/Retry-After header during probing.
 policies:
 - name: Backoff Strategy
   description: Exponential backoff with jitter; honor Retry-After; harvest during off-peak hours.
